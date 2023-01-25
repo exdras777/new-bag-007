@@ -1,0 +1,41 @@
+name: newbag
+description: A new Flutter project.
+
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+
+version: 1.0.2+3
+
+environment:
+  sdk: '>=2.18.4 <3.0.0'
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^0.13.5
+  flutter_masked_text2: ^0.9.1
+
+
+
+  cupertino_icons: ^1.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+  flutter_lints: ^2.0.0
+
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - img/conversor.png
+    - img/home.png
+    - img/bitin.png
+    - img/bitin.png
+
+
