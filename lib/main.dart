@@ -9,19 +9,19 @@ void main() { runApp(
       MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          // Define the default brightness and colors.
-          brightness: Brightness.dark,
-          primaryColor: Colors.lightBlue[500],
+          //Define the default brightness and colors.
+         //brightness: Brightness.dark,
+        //primaryColor: Colors.lightBlue[500],
 
           // Define the default font family.
-          fontFamily: 'Georgia',
+          //fontFamily: 'Georgia',
 
-          // Define the default `TextTheme`. Use this to specify the default
+          //Define the default `TextTheme`. Use this to specify the default
           // text styling for headlines, titles, bodies of text, and more.
-          textTheme: const TextTheme(
-            headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold   ),
-            headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
-            bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+         textTheme: const TextTheme(
+           // headline1: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold   ),
+           //headline6: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+           // bodyText2: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
           ),
         ),
 
@@ -198,7 +198,7 @@ class _PrincipalState extends State<Principal> {
     });
   }
 
-  Carregar(){
+  /*Carregar(){
     if ( dolarUSD == null) {
       return Center(
         child: Text("Obtendo dados...",
@@ -333,7 +333,7 @@ class _PrincipalState extends State<Principal> {
                   color: Color.fromRGBO(202, 204, 165, 1.0), fontSize: 25,
                 ),
                 onChanged: _dolCADConvert,
-                keyboardType: TextInputType.number,
+                keyb oardType: TextInputType.number,
               ),
             ),
             Divider(),
@@ -376,7 +376,7 @@ class _PrincipalState extends State<Principal> {
         ),
       );
     }
-  }
+  }*/
 
   @override
   void initState() {
@@ -392,7 +392,7 @@ class _PrincipalState extends State<Principal> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Color.fromRGBO(1, 21, 0, 0),
-        elevation: 50,
+        elevation: 0,
         titleSpacing: 70,
         title: Text("COTAÇÃO DE MOEDAS",
           style: TextStyle(
@@ -402,23 +402,123 @@ class _PrincipalState extends State<Principal> {
           ),
         ),
       ),
-      body: Column(
+      body: SingleChildScrollView(
+        child: Column(
           children: [
             Container(
-              color: Color.fromRGBO(30, 36, 224, 1.0),
-              width: double.infinity,
-              height: 210,
-            ),
+            color: Color.fromRGBO(30, 36, 224, 1.0),
+            width: double.infinity,
+            height: 159,
+              child:
+              TextField(
+                decoration: InputDecoration(
+                    labelText: "Insira um valor",
+                    labelStyle: TextStyle(color: Color.fromRGBO(211, 189, 12, 1.0)),
+                    border: OutlineInputBorder(),
+                ),
+                style: TextStyle(
+                  color:Color.fromRGBO(202, 204, 165, 1.0),
+                  fontSize: 28,
+                ),
+              ),
+          ),
             Container(
               color: Colors.white,
               height: MediaQuery.of(context).size.height -290,
+              child: Column(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Row(
+                        // crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Container(
+                            height: 69,
+                            width: 99,
+                            child: ElevatedButton(onPressed: (){},
+                              child: Text('R\$'),
+                            ),
+                          ),
+                          Container(
+                            height: 69,
+                            width: 99,
+                            child: ElevatedButton(onPressed: (){},
+                              child: Text('R\$'),
+                            ),
+                          ),
+                          Container(
+                            height: 69,
+                            width: 99,
+                            child: ElevatedButton(onPressed: (){},
+                              child: Text('R\$'),
+                            ),
+                          ),
+                        ],
+                      ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        height: 69,
+                        width: 99,
+                        child: ElevatedButton(onPressed: (){},
+                          child: Text('US\$'),
+                        ),
+                      ),
+                      Container(
+                        height: 69,
+                        width: 99,
+                        child: ElevatedButton(onPressed: (){},
+                          child: Text('US\$'),
+                        ),
+                      ),
+                      Container(
+                        height: 69,
+                        width: 99,
+                        child: ElevatedButton(onPressed: (){},
+                          child: Text('US\$'),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        height: 69,
+                        width: 99,
+                        child: ElevatedButton(onPressed: (){},
+                          child: Text('€'),
+                        ),
+                      ),
+                      Container(
+                        height: 69,
+                        width: 99,
+                        child: ElevatedButton(onPressed: (){},
+                          child: Text('€'),
+                        ),
+                      ),
+                      Container(
+                        height: 69,
+                        width: 99,
+                        child: ElevatedButton(onPressed: (){},
+                          child: Text('€'),
+                        ),
+                      )
+                    ],
+
+                  ),
+
+                ],
+              ),
             )
-          ]
+    ]
+        )
       ),
     );
   }
-  },
-Exdras é lindo!!!
+  }
 
 
           /*decoration: BoxDecoration(
@@ -431,9 +531,9 @@ Exdras é lindo!!!
                 Color.fromRGBO(21, 6, 77, 1),
                 Color.fromRGBO(218, 138, 16, 1)],
             ),*/
-              /*boxShadow:[
-               new BoxShadow(
-                 color: Color.fromRGBO(12, 68, 189, 1.0),//scarfold
-                  offset: new Offset(9,10),
-                  blurRadius: 40,
-                  spreadRadius: 24,*/
+              //boxShadow:[
+               //new BoxShadow(
+                 //color: Color.fromRGBO(12, 68, 189, 1.0),//scarfold
+                  //offset: new Offset(9,10),
+                 // blurRadius: 40,
+                 // spreadRadius: 24*/

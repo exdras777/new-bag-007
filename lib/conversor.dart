@@ -345,10 +345,6 @@ class _conversorState extends State<conversor> { /**/
   }
 
 
-
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
