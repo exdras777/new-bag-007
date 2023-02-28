@@ -74,44 +74,36 @@ class _PrincipalState extends State<Principal> {
       libraGBP = map["results"]["currencies"]["GBP"]["buy"];
     });
   }
+//conversão do real =>
 
-  conversorInserido(){
-
+  converReal(){
+    return (valorInserido);
   }
-
-  convertUSD(){
-    return (valorInserido!/ this.dolarUSD!);
+  converUSD(){
+    return  (valorInserido! * this.dolarUSD!);
   }
-
-  // convertEUR(){
-  //   convertEUR().text (real/this.dolarUSD);
-  // }
-  //
-  // convertLBR(){
-  //   convertLBR().text (libraGBP * this.libraGBP!);
-  // }
-  //
-  // convertCAD(){
-  //   convertCAD().text (dolCAD * this.dolCAD);
-  // }
-  //
-  // convertAUS(){
-  //   convertAUS().text (dolAUS * this.dolAUS!);
-  // }
-  //
-  // convertARS(){
-  //   convertARS().text (pesoARS * this.pesoARS!);
-  // }
-  //
-  // convertJPY(){
-  //   convertJPY().text (ieneJPN * this.ieneJPN!);
-  // }
-  //
-  // convertYEN(){
-  //   convertYEN().text (renminbiCNY * this.renminbiCNY!);
-  // }
-
-
+  convertEUR(){
+    return  (valorInserido! * this.euro!);
+  }
+  convertLBR(){
+    return  (valorInserido! * this.libraGBP!);
+  }
+  convertCAD(){
+    return  (valorInserido! * this.dolCAD!);
+  }
+  convertAUS(){
+    return  (valorInserido! * this.dolAUS!);
+  }
+  convertARS(){
+    return  (valorInserido! * this.pesoARS!);
+  }
+  convertJPY(){
+    return  (valorInserido! * this.ieneJPN!);
+  }
+  convertYEN(){
+    return  (valorInserido! * this.renminbiCNY!);
+  }
+//fim da conversão do real
 
   Carregar() {
     if (dolarUSD == null) {
@@ -125,14 +117,12 @@ class _PrincipalState extends State<Principal> {
       );
     }
   }
-
   @override
   void initState() {
     recuperarpreco();
     RetornaDados();
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -151,9 +141,9 @@ class _PrincipalState extends State<Principal> {
         ),
       ),
       body: SingleChildScrollView(
-          child: Column(children: [
-            Container(
-              padding: EdgeInsets.all(18),
+           child: Column(children: [
+             Container(
+               padding: EdgeInsets.all(18),
               color: Color.fromRGBO(30, 36, 224, 1.0),
               width: double.infinity,
               height: 159,
@@ -170,41 +160,41 @@ class _PrincipalState extends State<Principal> {
                 controller: _ValorInserido,
                 onChanged: (_){
                   valorInserido = double.parse(_ValorInserido.text.replaceAll(".", "").replaceAll(",", "."));
+                  if ( activebtonR$ )
+                    setState(() => StrBrl = converReal ().toStringAsFixed(2));
 
                   if ( activebtonR$ )
-                    setState(() => StrBrl = convertUSD().toStringAsFixed(2));
+                    setState(() => StrUSD = converUSD ().toStringAsFixed(2));
 
-                  // if ( activebtonU$D )
-                  //   setState(() => StrUSD = convertUSD().toStringAsFixed(2));
+                  if ( activebtonR$)
+                    setState(() => StrEUR = convertEUR().toStringAsFixed(2));
 
-                  // if ( activebtonEUR )
-                  //   setState(() => StrEUR = convertEUR()!.toStringAsFixed(2));
-                  //
-                  //   if ( activebtonLBR )
-                  //   setState(() => StrLBR = convertLBR()!.toStringAsFixed(2));
-                  //
-                  //   if ( activebtonCAD )
-                  //   setState(() => StrCAD = convertCAD()!.toStringAsFixed(2));
-                  //
-                  //   if ( activebtonAUS )
-                  //   setState(() => StrAUS = convertAUS()!.toStringAsFixed(2));
-                  //
-                  //   if ( activebtonARS )
-                  //   setState(() => StrARS = convertARS()!.toStringAsFixed(2));
-                  //
-                  //   if ( activebtonJP )
-                  //   setState(() => StrJPY = convertJPY()!.toStringAsFixed(2));
-                  //
-                  //   if ( activebtonYEN )
-                  //   setState(() => StrYEN = convertYEN()!.toStringAsFixed(2));
+                    if ( activebtonR$ )
+                    setState(() => StrLBR = convertLBR().toStringAsFixed(2));
+
+                    if ( activebtonR$ )
+                    setState(() => StrCAD = convertCAD().toStringAsFixed(2));
+
+                    if ( activebtonR$ )
+                    setState(() => StrAUS = convertAUS().toStringAsFixed(2));
+
+                    if ( activebtonR$ )
+                    setState(() => StrARS = convertARS().toStringAsFixed(2));
+
+                    if ( activebtonR$ )
+                    setState(() => StrJPY = convertJPY().toStringAsFixed(2));
+
+                    if ( activebtonR$ )
+                    setState(() => StrYEN = convertYEN().toStringAsFixed(2));
                 },
               ),
-        ),
+      ),
             Container(
               color: Colors.white,
               height: MediaQuery.of(context).size.height - 290,
-              child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              child:
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -307,8 +297,9 @@ class _PrincipalState extends State<Principal> {
                       ),
                     ),
                   ),
-                ],
-              ),
+                 ],
+               ),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
