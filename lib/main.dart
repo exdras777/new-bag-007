@@ -28,11 +28,11 @@ class _PrincipalState extends State<Principal> {
   bool activebtonU$D = false;
   bool activebtonEUR = false;
   bool activebtonLBR = false;
-  bool activebtonJP = false;
-  bool activebtonYEN = false;
-  bool activebtonARS = false;
   bool activebtonCAD = false;
   bool activebtonAUS = false;
+  bool activebtonARS = false;
+  bool activebtonJPY = false;
+  bool activebtonYEN = false;
 
   String StrBrl = '0.00';
   String StrUSD = '0.00';
@@ -57,7 +57,7 @@ class _PrincipalState extends State<Principal> {
     });
   }
 
-  double? dolarUSD, euro, pesoARS, dolAUS, dolCAD, ieneJPN, renminbiCNY, libraGBP, real;
+  double? dolarUSD, euro, pesoARS, dolAUS, dolCAD, ieneJPN, renminbiCNY, libra, real;
   RetornaDados() async {
     final url = Uri.parse(
         "https://api.hgbrasil.com/finance?format=json-cors&key=05aaee4a");
@@ -71,263 +71,244 @@ class _PrincipalState extends State<Principal> {
       dolAUS = map["results"]["currencies"]["AUD"]["buy"];
       ieneJPN = map["results"]["currencies"]["JPY"]["buy"];
       renminbiCNY = map["results"]["currencies"]["CNY"]["buy"];
-      libraGBP = map["results"]["currencies"]["GBP"]["buy"];
+      libra = map["results"]["currencies"]["GBP"]["buy"];
     });
   }
-  //conversores real
-  vlrReal(){
-    return (valorInserido);
-  }
-  converUSD(){
+  //conversores
+  brlUSD(){
     return  (valorInserido! / this.dolarUSD!);
   }
-  converEUR(){
+  brlEUR(){
     return  (valorInserido! / this.euro!);
   }
-  converLBR(){
-    return  (valorInserido! / this.libraGBP!);
+  brlLBR(){
+    return  (valorInserido! / this.libra!);
   }
-  converCAD(){
+  brlCAD(){
     return  (valorInserido! / this.dolCAD!);
   }
-  converAUS(){
+  brlAUS(){
     return  (valorInserido! / this.dolAUS!);
   }
-  converARS(){
+  brlARS(){
     return  (valorInserido! / this.pesoARS!);
   }
-  converJPY(){
+  brlJPY(){
     return  (valorInserido! / this.ieneJPN!);
   }
-  converYEN(){
-    return  (valorInserido! / this.renminbiCNY!);
+  brlYEN(){
+    return  (valorInserido! /this.renminbiCNY!);
   }
-  //
-  //
-  vlrUSD(){
-    return (valorInserido!);
+
+  usdBRL(){
+    return (valorInserido! * this.dolarUSD!);
   }
-  REALedol(){
-    return (valorInserido!/this.dolarUSD!);
-  }
-  convertEUR(){
+  usdEUR(){
     return  (valorInserido! / this.euro!* this.dolarUSD!);
   }
-  convertLBR(){
-    return  (valorInserido! / this.libraGBP! * this.dolarUSD!);
+  usdLBR(){
+    return  (valorInserido! / this.libra! * this.dolarUSD!);
   }
-  convertCAD(){
-    return  (valorInserido! * this.dolCAD!);
+  usdCAD(){
+    return  (valorInserido! / this.dolCAD! * this.dolarUSD!);
   }
-  convertAUS(){
-    return  (valorInserido! * this.dolAUS!);
+  usdAUS(){
+    return  (valorInserido! / this.dolAUS! * this.dolarUSD!);
   }
-  convertARS(){
-    return  (valorInserido! / this.pesoARS!);
+  usdARS(){
+    return  (valorInserido! / this.pesoARS! * this.dolarUSD!);
   }
-  convertJPY(){
-    return  (valorInserido! / this.ieneJPN!);
+  usdJPY(){
+    return  (valorInserido! / this.ieneJPN! * this.dolarUSD!);
   }
-  convertYEN(){
-    return  (valorInserido! / this.renminbiCNY!);
+  usdYEN(){
+    return  (valorInserido! / this.renminbiCNY! *this.dolarUSD!);
   }
-  //
-  //
-  vlrEURO(){
-    return  (valorInserido!);
-  }
-  REALeuro(){
+
+  eurBRL(){
     return (valorInserido!/this.euro!);
   }
-  converTUSD(){
+  eurUSD(){
     return  (valorInserido! / this.dolarUSD! * this.euro!);
   }
-  converTLBR(){
-    return  (valorInserido! * this.libraGBP! / this.euro!);
+  eurLBR(){
+    return  (valorInserido! / this.libra! * this.euro!);
   }
-  converTCAD(){
-    return  (valorInserido! * this.dolCAD!);
+  eurCAD(){
+    return  (valorInserido! / this.dolCAD! * this.euro!);
   }
-  converTAUS(){
-    return  (valorInserido! * this.dolAUS!);
+  eurAUS(){
+    return  (valorInserido! / this.dolAUS! * this.euro!);
   }
-  converTARS(){
-    return  (valorInserido! * this.pesoARS!);
+  eurARS(){
+    return  (valorInserido! / this.pesoARS! * this.euro!);
   }
-  converTJPY(){
-    return  (valorInserido! * this.ieneJPN!);
+  eurJPY(){
+    return  (valorInserido! / this.ieneJPN! * this.euro!);
   }
-  converTYEN(){
-    return  (valorInserido! * this.renminbiCNY!);
-  }
-  //
-  //
-  vlrGBP(){
-    return(valorInserido!);
-  }
-  REALeGBP(){
-    return (valorInserido!/this.libraGBP!);
-  }
-  ConverUSD(){
-    return  (valorInserido! * this.dolarUSD!);
-  }
-  ConvertEUR(){
-    return  (valorInserido! * this.euro!);
-  }
-  ConvertCAD(){
-    return  (valorInserido! * this.dolCAD!);
-  }
-  ConvertAUS(){
-    return  (valorInserido! * this.dolAUS!);
-  }
-  ConvertARS(){
-    return  (valorInserido! / this.pesoARS!);
-  }
-  ConvertJPY(){
-    return  (valorInserido! / this.ieneJPN!);
-  }
-  ConvertYEN(){
-    return  (valorInserido! / this.renminbiCNY!);
-  }
-  //
-  //
-  vlrCAD(){
-    return(valorInserido!);
-  }
-  REALeCAD(){
-    return (valorInserido!/this.dolCAD!);
-  }
-  CONVERTUSD(){
-    return  (valorInserido! / this.dolarUSD!);
-  }
-  CONVERTEUR(){
-    return  (valorInserido! * this.euro!);
-  }
-  CONVERTLBR(){
-    return  (valorInserido! * this.libraGBP!);
-  }
-  CONVERTAUS(){
-    return  (valorInserido! * this.dolAUS!);
-  }
-  CONVERTARS(){
-    return  (valorInserido! / this.pesoARS!);
-  }
-  CONVERTJPY(){
-    return  (valorInserido! / this.ieneJPN!);
-  }
-  CONVERTYEN(){
-    return  (valorInserido! / this.renminbiCNY!);
-  }
-  //
-  //
-  vlrAUS(){
-    return (valorInserido!);
-  }
-  REALAUS(){
-    return (valorInserido!/this.dolAUS!);
-  }
-  CONVUSD(){
-    return  (valorInserido! / this.dolarUSD!);
-  }
-  CONVCAD(){
-    return  (valorInserido! * this.dolCAD!);
-  }
-  CONVEUR(){
-    return  (valorInserido! * this.euro!);
-  }
-  CONVLBR(){
-    return  (valorInserido! * this.libraGBP!);
-  }
-  CONVARS(){
-    return  (valorInserido! / this.pesoARS!);
-  }
-  CONVJPY(){
-    return  (valorInserido! / this.ieneJPN!);
-  }
-  CONVYEN(){
-    return  (valorInserido! / this.renminbiCNY!);
-  }
-  //
-  //
-  vlrARS(){
-    return  (valorInserido!);
-  }
-  REALeARS(){
-    return (valorInserido!/this.pesoARS!);
-  }
-  cvsorUSD(){
-    return  (valorInserido! / this.dolarUSD!);
-  }
-  cvsorEUR(){
-    return  (valorInserido! / this.euro!);
-  }
-  cvsorLBR(){
-    return  (valorInserido! / this.libraGBP!);
-  }
-  cvsorCAD(){
-    return  (valorInserido! / this.dolCAD!);
-  }
-  cnvsorAUS(){
-    return(valorInserido! / this.dolAUS!);
-  }
-  cvsorJPY(){
-    return  (valorInserido! / this.ieneJPN!);
-  }
-  cvsorYEN(){
-    return  (valorInserido! / this.renminbiCNY!);
-  }
-  //
-  //
-  vlrJPY(){
-    return (valorInserido!);
-  }
-  REALeJPY(){
-    return (valorInserido!/this.ieneJPN!);
-  }
-  cnvtUSD(){
-    return(valorInserido!);
-  }
-  cnvtEUR(){
-    return(valorInserido!);
-  }
-  cnvtLBR(){
-    return(valorInserido!);
-  }
-  cnvtCAD(){
-    return(valorInserido!);
-  }
-  cnvtAUS(){
-    return(valorInserido!);
-  }
-  cnvtARS(){
-    return(valorInserido!);
-  }
-  cnvtYEN(){
-    return(valorInserido!);
-  }
-  //
-  //
-  vlrYENE(){
-    return (valorInserido!);
-  }
-  REALeYENE(){
-    return (valorInserido!/this.renminbiCNY!);
+  eurYEN(){
+    return  (valorInserido! / this.renminbiCNY! *this.euro!);
   }
 
+  lbrBRL(){
+    return (valorInserido! * this.libra!);
+  }
+  lbrUSD(){
+    return  (valorInserido! * this.libra! / this.dolarUSD!);
+  }
+  lbrEUR() {
+    return  (valorInserido! * this.libra! / this.euro!);
+  }
+  lbrCAD(){
+    return  (valorInserido! * this.libra! / this.dolCAD!);
+  }
+  lbrAUS(){
+    return  (valorInserido! * this.libra! / this.dolAUS!);
+  }
+  lbrARS(){
+    return  (valorInserido! * this.libra! / this.pesoARS!);
+  }
+  lbrJPY(){
+    return  (valorInserido! * this.libra! / this.ieneJPN!);
+  }
+  lbrYEN(){
+    return  (valorInserido! * this.libra! / this.renminbiCNY!);
+  }
 
+  dcadBRL(){
+    return(valorInserido! * dolCAD!);
+  }
+  dcadUSD(){
+    return  (valorInserido! * this.dolCAD! / this.dolarUSD!);
+  }
+  dcadEUR(){
+    return  (valorInserido! * this.dolCAD! / this.euro!);
+  }
+  dcadLBR(){
+    return  (valorInserido! * this.dolCAD! / this.libra!);
+  }
+  dcadAUS(){
+    return  (valorInserido! * this.dolCAD! / this.dolAUS!);
+  }
+  dcadARS(){
+    return  (valorInserido! * this.dolCAD! / this.pesoARS!);
+  }
+  dcadJPY(){
+    return  (valorInserido! * this.dolCAD! / this.ieneJPN!);
+  }
+  dcadYEN(){
+    return  (valorInserido! * this.dolCAD! / this.renminbiCNY!);
+  }
 
+  ausBRL(){
+    return (valorInserido! * this.dolAUS!);
+  }
+  ausUSD(){
+    return  (valorInserido! * this.dolAUS! / this.dolarUSD!);
+  }
+  ausCAD(){
+    return  (valorInserido! * this.dolAUS! / this.dolCAD!);
+  }
+  ausEUR(){
+    return  (valorInserido! * this.dolAUS! / this.euro!);
+  }
+  ausLBR(){
+    return  (valorInserido! * this.dolAUS! / this.libra!);
+  }
+  ausARS(){
+    return  (valorInserido! * this.dolAUS! / this.pesoARS!);
+  }
+  ausJPY(){
+    return  (valorInserido! * this.dolAUS! / this.ieneJPN!);
+  }
+  ausYEN(){
+    return  (valorInserido! * this.dolAUS! / this.renminbiCNY!);
+  }
 
+  arsBRL(){
+    return (valorInserido! * this.pesoARS!);
+  }
+  arsUSD(){
+    return  (valorInserido! * this.pesoARS! / this.dolarUSD!);
+  }
+  arsEUR(){
+    return  (valorInserido! * this.pesoARS! / this.euro!);
+  }
+  arsLBR(){
+    return  (valorInserido! * this.pesoARS! / this. libra!);
+  }
+  arsCAD(){
+    return  (valorInserido! * this.pesoARS! / this.dolCAD!);
+  }
+  arsAUS(){
+    return(valorInserido! * this.pesoARS! / this.dolAUS!);
+  }
+  arsJPY(){
+    return  (valorInserido! * this.pesoARS! / this.ieneJPN!);
+  }
+  arsYEN(){
+    return  (valorInserido! * this.pesoARS! / this.renminbiCNY!);
+  }
 
+  jpBRL(){
+    return (valorInserido! * this.ieneJPN!);
+  }
+  jpUSD(){
+    return(valorInserido! * this.ieneJPN! / this.dolarUSD!);
+  }
+  jpEUR(){
+    return(valorInserido!* this.ieneJPN! / this.euro!);
+  }
+  jpLBR(){
+    return(valorInserido! * this.ieneJPN! / this.libra!);
+  }
+  jpCAD(){
+    return(valorInserido!* this.ieneJPN! / this.dolCAD!);
+  }
+  jpAUS(){
+    return(valorInserido! * this.ieneJPN! / this.dolAUS!);
+  }
+  jpARS(){
+    return(valorInserido! * this.ieneJPN! / this.pesoARS!);
+  }
+  jpYEN(){
+    return(valorInserido! * this.ieneJPN! / this.renminbiCNY!);
+  }
 
+  ynBRL(){
+    return (valorInserido! * this.renminbiCNY!);
+  }
+  ynUSD(){
+    return (valorInserido! * this.renminbiCNY! / this.dolarUSD!);
+  }
+  ynEUR(){
+    return (valorInserido! * this.renminbiCNY! / this.euro!);
+  }
+  ynLBR(){
+    return (valorInserido! * this.renminbiCNY! / this.libra!);
+  }
+  ynCAD(){
+    return (valorInserido! * this.renminbiCNY! /this.dolCAD!);
+  }
+  ynAUS(){
+    return (valorInserido! * this.renminbiCNY! / this.dolAUS!);
+  }
+  ynARS(){
+    return (valorInserido! * this.renminbiCNY! / this.pesoARS!);
+  }
+  ynJPY(){
+    return (valorInserido! * this.renminbiCNY! / this.ieneJPN!);
+  }
 
 
   Carregar() {
-    if (dolarUSD == null) {
+    if (real == null) {
       return Center(
         child: Text(
           "Obtendo dados...",
           style: TextStyle(
             fontSize: 30,
+            color: Color.fromRGBO(12, 12, 3, 1)
           ),
         ),
       );
@@ -350,9 +331,9 @@ class _PrincipalState extends State<Principal> {
         title: Text(
           "COTAÇÃO DE MOEDAS",
           style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.w500,
-            color: Color.fromRGBO(19, 56, 178, 1.0),
+            fontSize: 23,
+            fontWeight: FontWeight.w900,
+            color: Color.fromRGBO(30, 36, 224, 1.0),
           ),
         ),
       ),
@@ -362,165 +343,127 @@ class _PrincipalState extends State<Principal> {
               padding: EdgeInsets.all(18),
               color: Color.fromRGBO(30, 36, 224, 1.0),
               width: double.infinity,
-              height: 159,
+              height: 155,
               child: TextField(
                 decoration: InputDecoration(
                   labelText: "Insira um valor",
                   labelStyle: TextStyle(
-                    color: Color.fromRGBO(211, 189, 12, 1.0),
-                    fontSize: 29,
+                    color: Color.fromRGBO(255,255,255,1),
+                    fontSize: 26,
                   ),
-                  border: OutlineInputBorder(),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(17.4))
+                  ),
                 ),
                 keyboardType: TextInputType.number,
                 controller: _ValorInserido,
                 onChanged: (_){
                   valorInserido = double.parse(_ValorInserido.text.replaceAll(".", "").replaceAll(",", "."));
-                  if ( activebtonR$ )
-                    setState(() => StrBrl = vlrReal().toStringAsFixed(2));
-
-                  if ( activebtonR$ )
-                    setState(() => StrUSD = converUSD ().toStringAsFixed(2));
-
-                  if ( activebtonR$)
-                    setState(() => StrEUR = converEUR().toStringAsFixed(2));
-
-                  if ( activebtonR$ )
-                    setState(() => StrLBR = converLBR().toStringAsFixed(2));
-
-                  if ( activebtonR$ )
-                    setState(() => StrCAD = converCAD().toStringAsFixed(2));
-
-                  if ( activebtonR$ )
-                    setState(() => StrAUS = converAUS().toStringAsFixed(2));
-
-                  if ( activebtonR$ )
-                    setState(() => StrARS = converARS().toStringAsFixed(2));
-
-                  if ( activebtonR$ )
-                    setState(() => StrJPY = converJPY().toStringAsFixed(2));
-
-                  if ( activebtonR$ )
-                    setState(() => StrYEN = converYEN().toStringAsFixed(2));
-                  //
-                  //
-                  //
-                  if ( activebtonU$D )
-                    setState(() => StrUSD = vlrUSD().toStringAsFixed(2));
-
-                  if ( activebtonU$D )
-                    setState(() => StrBrl = REALedol().toStringAsFixed(2));
-
-                  if ( activebtonU$D )
-                    setState(() => StrEUR = convertEUR()  .toStringAsFixed(2));
-
-                  if ( activebtonU$D )
-                    setState(() => StrLBR = convertLBR().toStringAsFixed(2));
-
-                  if ( activebtonU$D )
-                  setState(() => StrCAD = convertCAD().toStringAsFixed(2));
-
-                  if ( activebtonU$D )
-                  setState(() => StrAUS = convertAUS().toStringAsFixed(2));
-
-                  if ( activebtonU$D )
-                  setState(() => StrJPY = convertJPY().toStringAsFixed(2));
-
-                  if ( activebtonU$D )
-                    setState(() => StrYEN = convertYEN().toStringAsFixed(2));
-                  //
-                  //
-                  if ( activebtonEUR )
-                    setState(() => StrEUR = vlrEURO().toStringAsFixed(2));
-
-                  if ( activebtonEUR )
-                    setState(() => StrBrl = REALeuro().toStringAsFixed(2));
-
-                  if ( activebtonEUR )
-                    setState(() => StrUSD = converTUSD().toStringAsFixed(2));
-
-                  if ( activebtonEUR )
-                    setState(() => StrLBR = converTLBR().toStringAsFixed(2));
-
-                  if ( activebtonEUR )
-                    setState(() => StrCAD = converTCAD().toStringAsFixed(2));
-
-                  if ( activebtonEUR )
-                    setState(() => StrAUS = converTAUS().toStringAsFixed(2));
-
-                  if ( activebtonEUR )
-                    setState(() => StrJPY = converTJPY().toStringAsFixed(2));
-
-                  if ( activebtonEUR )
-                    setState(() => StrYEN = converTYEN().toStringAsFixed(2));
-                  //
-                  //
-                  if ( activebtonLBR )
-                    setState(() => StrLBR = vlrGBP().toStringAsFixed(2));
-
-                  if ( activebtonLBR )
-                    setState(() => StrBrl = REALeGBP().toStringAsFixed(2));
-
-                  if ( activebtonLBR )
-                    setState(() => StrUSD = CONVERTUSD().toStringAsFixed(2));
-
-                  if ( activebtonLBR )
-                    setState(() => StrCAD = ConvertCAD().toStringAsFixed(2));
-
-                  if ( activebtonLBR )
-                    setState(() => StrAUS = CONVERTAUS().toStringAsFixed(2));
-                  if ( activebtonLBR )
-                    setState(() => StrARS = CONVERTARS().toStringAsFixed(2));
-                  if ( activebtonLBR )
-                    setState(() => StrJPY = CONVERTJPY().toStringAsFixed(2));
-                  if ( activebtonLBR )
-                    setState(() => StrYEN = CONVERTYEN().toStringAsFixed(2));
-                  //
-                  //
-                  if ( activebtonCAD )
-                    setState(() => StrCAD = vlrCAD().toStringAsFixed(2));
-                  if ( activebtonCAD )
-                    setState(() => StrBrl = REALeCAD().toStringAsFixed(2));
-                  if ( activebtonCAD )
-                    setState(() => StrUSD = CONVERTUSD().toStringAsFixed(2));
-                  if ( activebtonCAD )
-                    setState(() => StrEUR = CONVERTEUR().toStringAsFixed(2));
-                  if ( activebtonCAD )
-                    setState(() => StrAUS = CONVERTAUS().toStringAsFixed(2));
-                  if ( activebtonCAD )
-                    setState(() => StrARS = CONVERTARS().toStringAsFixed(2));
-                  if ( activebtonCAD )
-                    setState(() => StrJPY = CONVERTJPY().toStringAsFixed(2));
-                  if ( activebtonCAD )
-                    setState(() => StrYEN = CONVERTYEN().toStringAsFixed(2));
-                  //
-                  //
-                  if ( activebtonAUS )
-                    setState(() => StrAUS = vlrAUS().toStringAsFixed(2));
-
-                  if ( activebtonAUS )
-                    setState(() => StrBrl = REALeCAD().toStringAsFixed(2));
-
-                  if ( activebtonAUS )
-                    setState(() => StrUSD = CONVERTUSD().toStringAsFixed(2));
-                  if ( activebtonAUS )
-                    setState(() => StrEUR = REALeCAD().toStringAsFixed(2));
-                  if ( activebtonAUS )
-                    setState(() => StrARS = CONVERTARS().toStringAsFixed(2));
-                  if ( activebtonAUS )
-                    setState(() => StrJPY = CONVERTJPY().toStringAsFixed(2));
-                  if ( activebtonAUS )
-                    setState(() => StrYEN = CONVERTYEN().toStringAsFixed(2));
-
-
-
-
+                  if ( activebtonR$  ) {
+                    setState(() => StrBrl = valorInserido!.toStringAsFixed(2));
+                    setState(() => StrUSD = brlUSD().toStringAsFixed(2));
+                    setState(() => StrEUR = brlEUR().toStringAsFixed(2));
+                    setState(() => StrLBR = brlLBR().toStringAsFixed(2));
+                    setState(() => StrCAD = brlCAD().toStringAsFixed(2));
+                    setState(() => StrAUS = brlAUS().toStringAsFixed(2));
+                    setState(() => StrARS = brlARS().toStringAsFixed(2));
+                    setState(() => StrJPY = brlJPY().toStringAsFixed(2));
+                    setState(() => StrYEN = brlYEN().toStringAsFixed(2));
+                  }
+                  if ( activebtonU$D ) {
+                    setState(() => StrUSD = valorInserido!.toStringAsFixed(2));
+                    setState(() => StrBrl = usdBRL().toStringAsFixed(2));
+                    setState(() => StrEUR = usdEUR()  .toStringAsFixed(2));
+                    setState(() => StrLBR = usdLBR().toStringAsFixed(2));
+                    setState(() => StrCAD = usdCAD().toStringAsFixed(2));
+                    setState(() => StrAUS = usdAUS().toStringAsFixed(2));
+                    setState(() => StrARS = usdARS().toStringAsFixed(2));
+                    setState(() => StrJPY = usdJPY().toStringAsFixed(2));
+                    setState(() => StrYEN = usdYEN().toStringAsFixed(2));
+                  }
+                  if ( activebtonEUR ) {
+                    setState(() => StrEUR = valorInserido!.toStringAsFixed(2));
+                    setState(() => StrBrl = eurBRL().toStringAsFixed(2));
+                    setState(() => StrUSD = eurUSD().toStringAsFixed(2));
+                    setState(() => StrLBR = eurLBR().toStringAsFixed(2));
+                    setState(() => StrCAD = eurCAD().toStringAsFixed(2));
+                    setState(() => StrAUS = eurAUS().toStringAsFixed(2));
+                    setState(() => StrARS = eurARS().toStringAsFixed(2));
+                    setState(() => StrJPY = eurJPY().toStringAsFixed(2));
+                    setState(() => StrYEN = eurYEN().toStringAsFixed(2));
+                  }
+                  if ( activebtonLBR ) {
+                    setState(() => StrLBR = valorInserido!.toStringAsFixed(2));
+                    setState(() => StrBrl = lbrBRL().toStringAsFixed(2));
+                    setState(() => StrUSD = lbrUSD().toStringAsFixed(2));
+                    setState(() => StrEUR = lbrEUR().toStringAsFixed(2));
+                    setState(() => StrCAD = lbrCAD().toStringAsFixed(2));
+                    setState(() => StrAUS = lbrAUS().toStringAsFixed(2));
+                    setState(() => StrARS = lbrARS().toStringAsFixed(2));
+                    setState(() => StrJPY = lbrJPY().toStringAsFixed(2));
+                    setState(() => StrYEN = lbrYEN().toStringAsFixed(2));
+                  }
+                  if ( activebtonCAD ) {
+                    setState(() => StrCAD = valorInserido!.toStringAsFixed(2));
+                    setState(() => StrBrl = dcadBRL().toStringAsFixed(2));
+                    setState(() => StrUSD = dcadUSD().toStringAsFixed(2));
+                    setState(() => StrEUR = dcadEUR().toStringAsFixed(2));
+                    setState(() => StrLBR = dcadLBR().toStringAsFixed(2));
+                    setState(() => StrAUS = dcadAUS().toStringAsFixed(2));
+                    setState(() => StrARS = dcadARS().toStringAsFixed(2));
+                    setState(() => StrJPY = dcadJPY().toStringAsFixed(2));
+                    setState(() => StrYEN = dcadYEN().toStringAsFixed(2));
+                  }
+                  if ( activebtonAUS ) {
+                    setState(() => StrAUS = valorInserido!.toStringAsFixed(2));
+                    setState(() => StrBrl = ausBRL().toStringAsFixed(2));
+                    setState(() => StrUSD = ausUSD().toStringAsFixed(2));
+                    setState(() => StrEUR = ausEUR().toStringAsFixed(2));
+                    setState(() => StrLBR = ausLBR().toStringAsFixed(2));
+                    setState(() => StrCAD = ausCAD().toStringAsFixed(2));
+                    setState(() => StrARS = ausARS().toStringAsFixed(2));
+                    setState(() => StrJPY = ausJPY().toStringAsFixed(2));
+                    setState(() => StrYEN = ausYEN().toStringAsFixed(2));
+                  }
+                  if ( activebtonARS ) {
+                    setState(() => StrARS = valorInserido!.toStringAsFixed(2));
+                    setState(() => StrBrl = arsBRL().toStringAsFixed(2));
+                    setState(() => StrUSD = arsUSD().toStringAsFixed(2));
+                    setState(() => StrEUR = arsEUR().toStringAsFixed(2));
+                    setState(() => StrLBR = arsLBR().toStringAsFixed(2));
+                    setState(() => StrCAD = arsCAD().toStringAsFixed(2));
+                    setState(() => StrAUS = arsAUS().toStringAsFixed(2));
+                    setState(() => StrJPY = arsJPY().toStringAsFixed(2));
+                    setState(() => StrYEN = arsYEN().toStringAsFixed(2));
+                  }
+                  if ( activebtonJPY ) {
+                    setState(() => StrJPY = valorInserido!.toStringAsFixed(2));
+                    setState(() => StrBrl = jpBRL().toStringAsFixed(2));
+                    setState(() => StrUSD = jpUSD().toStringAsFixed(2));
+                    setState(() => StrEUR = jpEUR().toStringAsFixed(2));
+                    setState(() => StrLBR = jpLBR().toStringAsFixed(2));
+                    setState(() => StrAUS = jpAUS().toStringAsFixed(2));
+                    setState(() => StrCAD = jpCAD().toStringAsFixed(2));
+                    setState(() => StrARS = jpARS().toStringAsFixed(2));
+                    setState(() => StrYEN = jpYEN().toStringAsFixed(2));
+                  }
+                  if ( activebtonYEN ) {
+                    setState(() => StrYEN = valorInserido!.toStringAsFixed(2));
+                    setState(() => StrBrl = ynBRL().toStringAsFixed(2));
+                    setState(() => StrUSD = ynUSD().toStringAsFixed(2));
+                    setState(() => StrEUR = ynEUR().toStringAsFixed(2));
+                    setState(() => StrLBR = ynLBR().toStringAsFixed(2));
+                    setState(() => StrCAD = ynCAD().toStringAsFixed(2));
+                    setState(() => StrAUS = ynAUS().toStringAsFixed(2));
+                    setState(() => StrARS = ynARS().toStringAsFixed(2));
+                    setState(() => StrJPY = ynJPY().toStringAsFixed(2));
+                  }
                 },
               ),
             ),
             Container(
-              color: Colors.white,
-              height: MediaQuery.of(context).size.height - 290,
+              color: Color.fromRGBO(255, 255, 255, 1.0),
+              height: MediaQuery.of(context).size.height - 301,
               child:
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -529,8 +472,8 @@ class _PrincipalState extends State<Principal> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
-                        height: 69,
-                        width: 99,
+                        height: 82,
+                        width: 100,
                         child: ElevatedButton(
                           onPressed: () {
                             if (!activebtonR$) {
@@ -541,7 +484,7 @@ class _PrincipalState extends State<Principal> {
                                 activebtonAUS = false;
                                 activebtonCAD = false;
                                 activebtonEUR = false;
-                                activebtonJP = false;
+                                activebtonJPY = false;
                                 activebtonLBR = false;
                                 activebtonYEN = false;
                               })  ;
@@ -550,8 +493,8 @@ class _PrincipalState extends State<Principal> {
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               activebtonR$
-                                  ? Color.fromRGBO(255, 255, 255, 1.0)
-                                  : Color.fromRGBO(27, 89, 222, 1.0),
+                                  ? Color.fromRGBO(255, 255, 255, 0.69)
+                                  : Color.fromRGBO(2, 82, 252, 1.0),
                             ),
                           ),
                           child: Text(
@@ -562,8 +505,8 @@ class _PrincipalState extends State<Principal> {
                         ),
                       ),
                       Container(
-                        height: 69,
-                        width: 99,
+                        height: 82,
+                        width: 100,
                         child: ElevatedButton(
                           onPressed: () {
                             if (!activebtonU$D) {
@@ -574,7 +517,7 @@ class _PrincipalState extends State<Principal> {
                                 activebtonAUS = false;
                                 activebtonCAD = false;
                                 activebtonEUR = false;
-                                activebtonJP = false;
+                                activebtonJPY = false;
                                 activebtonLBR = false;
                                 activebtonYEN = false;
                               });
@@ -583,8 +526,8 @@ class _PrincipalState extends State<Principal> {
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               activebtonU$D
-                                  ? Color.fromRGBO(255, 255, 255, 1.0)
-                                  : Color.fromRGBO(27, 89, 222, 1.0),
+                                  ? Color.fromRGBO(255, 255, 255, 0.69)
+                                  : Color.fromRGBO(2, 82, 252, 1.0),
                             ),
                           ),
                           child: Text(
@@ -594,19 +537,19 @@ class _PrincipalState extends State<Principal> {
                         ),
                       ),
                       Container(
-                        height: 69,
-                        width: 99,
+                          height: 82,
+                          width: 100,
                         child: ElevatedButton(
                           onPressed: () {
                             if (!activebtonEUR) {
                               setState(() {
-                                activebtonEUR = !activebtonEUR;
+                                activebtonEUR = true;
                                 activebtonU$D = false;
                                 activebtonARS = false;
                                 activebtonAUS = false;
                                 activebtonCAD = false;
                                 activebtonR$ = false;
-                                activebtonJP = false;
+                                activebtonJPY = false;
                                 activebtonLBR = false;
                                 activebtonYEN = false;
                               });
@@ -615,8 +558,8 @@ class _PrincipalState extends State<Principal> {
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               activebtonEUR
-                                  ? Color.fromRGBO(255, 255, 255, 1.0)
-                                  : Color.fromRGBO(27, 89, 222, 1.0),
+                                  ? Color.fromRGBO(255, 255, 255, 0.69)
+                                  : Color.fromRGBO(2, 82, 252, 1.0),
                             ),
                           ),
                           child: Text(
@@ -633,8 +576,8 @@ class _PrincipalState extends State<Principal> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
-                        height: 69,
-                        width: 99,
+                        height: 82,
+                        width: 100,
                         child: ElevatedButton(
                           onPressed: () {
                             if (!activebtonLBR) {
@@ -645,7 +588,7 @@ class _PrincipalState extends State<Principal> {
                                 activebtonAUS = false;
                                 activebtonCAD = false;
                                 activebtonEUR = false;
-                                activebtonJP = false;
+                                activebtonJPY = false;
                                 activebtonR$ = false;
                                 activebtonYEN = false;
                               });
@@ -654,8 +597,8 @@ class _PrincipalState extends State<Principal> {
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               activebtonLBR
-                                  ? Color.fromRGBO(255, 255, 255, 1.0)
-                                  : Color.fromRGBO(27, 89, 222, 1.0),
+                                  ? Color.fromRGBO(255, 255, 255, 0.69)
+                                  : Color.fromRGBO(2, 82, 252, 1.0),
                             ),
                           ),
                           child: Text(
@@ -665,8 +608,8 @@ class _PrincipalState extends State<Principal> {
                         ),
                       ),
                       Container(
-                        height: 69,
-                        width: 99,
+                        height: 82,
+                        width: 100,
                         child: ElevatedButton(
                           onPressed: () {
                             if (!activebtonCAD) {
@@ -676,7 +619,7 @@ class _PrincipalState extends State<Principal> {
                                 activebtonARS = false;
                                 activebtonAUS = false;
                                 activebtonEUR = false;
-                                activebtonJP = false;
+                                activebtonJPY = false;
                                 activebtonLBR = false;
                                 activebtonR$ = false;
                                 activebtonYEN = false;
@@ -686,8 +629,8 @@ class _PrincipalState extends State<Principal> {
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               activebtonCAD
-                                  ? Color.fromRGBO(255, 255, 255, 1.0)
-                                  : Color.fromRGBO(27, 89, 222, 1.0),
+                                  ? Color.fromRGBO(255, 255, 255, 0.69)
+                                  : Color.fromRGBO(2, 82, 252, 1.0),
                             ),
                           ),
                           child: Text(
@@ -697,8 +640,8 @@ class _PrincipalState extends State<Principal> {
                         ),
                       ),
                       Container(
-                        height: 69,
-                        width: 99,
+                        height: 82,
+                        width: 100,
                         child: ElevatedButton(
                           onPressed: () {
                             if (!activebtonAUS) {
@@ -708,7 +651,7 @@ class _PrincipalState extends State<Principal> {
                                 activebtonARS = false;
                                 activebtonCAD = false;
                                 activebtonEUR = false;
-                                activebtonJP = false;
+                                activebtonJPY = false;
                                 activebtonLBR = false;
                                 activebtonR$ = false;
                                 activebtonYEN = false;
@@ -718,8 +661,8 @@ class _PrincipalState extends State<Principal> {
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               activebtonAUS
-                                  ? Color.fromRGBO(255, 255, 255, 1.0)
-                                  : Color.fromRGBO(27, 89, 222, 1.0),
+                                  ? Color.fromRGBO(255, 255, 255, 0.69)
+                                  : Color.fromRGBO(2, 82, 252, 1.0),
                             ),
                           ),
                           child: Text(
@@ -734,8 +677,8 @@ class _PrincipalState extends State<Principal> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
-                        height: 69,
-                        width: 99,
+                      height: 82,
+                      width: 100,
                         child: ElevatedButton(
                           onPressed: () {
                             if (!activebtonARS) {
@@ -745,7 +688,7 @@ class _PrincipalState extends State<Principal> {
                                 activebtonAUS = false;
                                 activebtonCAD = false;
                                 activebtonEUR = false;
-                                activebtonJP = false;
+                                activebtonJPY = false;
                                 activebtonLBR = false;
                                 activebtonR$ = false;
                                 activebtonYEN = false;
@@ -755,8 +698,8 @@ class _PrincipalState extends State<Principal> {
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               activebtonARS
-                                  ? Color.fromRGBO(255, 255, 255, 1.0)
-                                  : Color.fromRGBO(27, 89, 222, 1.0),
+                                  ? Color.fromRGBO(255, 255, 255, 0.69)
+                                  : Color.fromRGBO(2, 82, 252, 1.0),
                             ),
                           ),
                           child: Text(
@@ -766,13 +709,13 @@ class _PrincipalState extends State<Principal> {
                         ),
                       ),
                       Container(
-                        height: 69,
-                        width: 99,
+                      height: 82,
+                      width: 100,
                         child: ElevatedButton(
                           onPressed: () {
-                            if (!activebtonJP) {
+                            if (!activebtonJPY) {
                               setState(() {
-                                activebtonJP= true;
+                                activebtonJPY= true;
                                 activebtonU$D = false;
                                 activebtonARS = false;
                                 activebtonAUS = false;
@@ -787,9 +730,9 @@ class _PrincipalState extends State<Principal> {
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                              activebtonJP
-                                  ? Color.fromRGBO(255, 255, 255, 1.0)
-                                  : Color.fromRGBO(27, 89, 222, 1.0),
+                              activebtonJPY
+                                  ? Color.fromRGBO(255, 255, 255, 0.69)
+                                  : Color.fromRGBO(2, 82, 252, 1.0),
                             ),
                           ),
                           child: Text(
@@ -799,8 +742,8 @@ class _PrincipalState extends State<Principal> {
                         ),
                       ),
                       Container(
-                        height: 69,
-                        width: 99,
+                      height: 82,
+                      width: 100,
                         child: ElevatedButton(
                           onPressed: () {
                             if (!activebtonYEN) {
@@ -811,7 +754,7 @@ class _PrincipalState extends State<Principal> {
                                 activebtonAUS = false;
                                 activebtonCAD = false;
                                 activebtonEUR = false;
-                                activebtonJP = false;
+                                activebtonJPY = false;
                                 activebtonR$ = false;
                                 activebtonLBR = false;
                               });
@@ -820,8 +763,8 @@ class _PrincipalState extends State<Principal> {
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               activebtonYEN
-                                  ? Color.fromRGBO(255, 255, 255, 1.0)
-                                  : Color.fromRGBO(27, 89, 222, 1.0),
+                                  ? Color.fromRGBO(255, 255, 255, 0.69)
+                                  : Color.fromRGBO(2, 82, 252, 1.0),
                             ),
                           ),
                           child: Text(
