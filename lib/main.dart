@@ -14,6 +14,8 @@ void main() {
   ));
 }
 
+TextEditingController customController = TextEditingController();
+
 class Principal extends StatefulWidget {
   const Principal({Key? key}) : super(key: key);
 
@@ -50,13 +52,11 @@ class _PrincipalState extends State<Principal> {
   recuperarpreco() async {
     final url = Uri.parse("https://blockchain.info/ticker");
     http.Response response = await http.get(url);
-
     final retorno = json.decode(response.body);
     setState(() {
       _preco = retorno['BRL']['buy'].toStringAsFixed(2);
     });
   }
-
   double? dolarUSD, euro, pesoARS, dolAUS, dolCAD, ieneJPN, renminbiCNY, libra, real;
   RetornaDados() async {
     final url = Uri.parse(
@@ -126,7 +126,7 @@ class _PrincipalState extends State<Principal> {
   }
 
   eurBRL(){
-    return (valorInserido!/this.euro!);
+    return (valorInserido! * this.euro!);
   }
   eurUSD(){
     return  (valorInserido! / this.dolarUSD! * this.euro!);
@@ -156,7 +156,7 @@ class _PrincipalState extends State<Principal> {
   lbrUSD(){
     return  (valorInserido! * this.libra! / this.dolarUSD!);
   }
-  lbrEUR() {
+  lbrEUR(){
     return  (valorInserido! * this.libra! / this.euro!);
   }
   lbrCAD(){
@@ -307,8 +307,8 @@ class _PrincipalState extends State<Principal> {
         child: Text(
           "Obtendo dados...",
           style: TextStyle(
-            fontSize: 30,
-            color: Color.fromRGBO(12, 12, 3, 1)
+              fontSize: 30,
+              color: Color.fromRGBO(12, 12, 3, 1)
           ),
         ),
       );
@@ -324,35 +324,55 @@ class _PrincipalState extends State<Principal> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          color: Colors.black,
+            onPressed: (){
+            AlertDialog(
+              content: TextField(
+              controller: customController,
+            ),
+              title: Text("data"),
+              actions: [
+                MaterialButton(
+                  elevation: 5.0,
+                  child: Text('ok!'),
+                  onPressed: (){}
+                )
+              ],
+            );
+          },
+          icon: Icon(Icons.help),
+        ),
         centerTitle: true,
         backgroundColor: Color.fromRGBO(1, 21, 0, 0),
         elevation: 0,
-        titleSpacing: 70,
+        titleSpacing:50,
         title: Text(
           "COTAÇÃO DE MOEDAS",
           style: TextStyle(
-            fontSize: 23,
+            fontSize:19,
             fontWeight: FontWeight.w900,
             color: Color.fromRGBO(30, 36, 224, 1.0),
           ),
         ),
       ),
       body: SingleChildScrollView(
-          child: Column(children: [
+          child: Column(
+              children: [
             Container(
               padding: EdgeInsets.all(18),
               color: Color.fromRGBO(30, 36, 224, 1.0),
               width: double.infinity,
-              height: 155,
+              height: 91,
               child: TextField(
                 decoration: InputDecoration(
                   labelText: "Insira um valor",
                   labelStyle: TextStyle(
                     color: Color.fromRGBO(255,255,255,1),
-                    fontSize: 26,
+                    fontSize: 24,
                   ),
                   border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(17.4))
+                      borderRadius: BorderRadius.all(Radius.circular(17.4))
                   ),
                 ),
                 keyboardType: TextInputType.number,
@@ -463,7 +483,7 @@ class _PrincipalState extends State<Principal> {
             ),
             Container(
               color: Color.fromRGBO(255, 255, 255, 1.0),
-              height: MediaQuery.of(context).size.height - 301,
+              height: MediaQuery.of(context).size.height - 313,
               child:
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -471,179 +491,578 @@ class _PrincipalState extends State<Principal> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
-                        height: 82,
-                        width: 100,
-                        child: ElevatedButton(
-                          onPressed: () {
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child:
+                        SizedBox(
+                          height: 80,
+                          width: 100,
+                          child: ElevatedButton(
+                            onPressed: () {
                             if (!activebtonR$) {
-                              setState(() {
-                                activebtonR$ = true;
-                                activebtonU$D = false;
-                                activebtonARS = false;
-                                activebtonAUS = false;
-                                activebtonCAD = false;
-                                activebtonEUR = false;
-                                activebtonJPY = false;
-                                activebtonLBR = false;
-                                activebtonYEN = false;
-                              })  ;
+                            setState(() {
+                              activebtonR$ = true;
+                              activebtonU$D = false;
+                              activebtonARS = false;
+                              activebtonAUS = false;
+                              activebtonCAD = false;
+                              activebtonEUR = false;
+                              activebtonJPY = false;
+                              activebtonLBR = false;
+                              activebtonYEN = false;
+                            });
+                            } valorInserido = double.parse(_ValorInserido.text.replaceAll(".", "").replaceAll(",", "."));
+                            if ( activebtonR$  ) {
+                              setState(() => StrBrl = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrUSD = brlUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = brlEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = brlLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = brlCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = brlAUS().toStringAsFixed(2));
+                              setState(() => StrARS = brlARS().toStringAsFixed(2));
+                              setState(() => StrJPY = brlJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = brlYEN().toStringAsFixed(2));
                             }
-                          },
-                          style: ButtonStyle(
+                            if ( activebtonU$D ) {
+                              setState(() => StrUSD = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = usdBRL().toStringAsFixed(2));
+                              setState(() => StrEUR = usdEUR()  .toStringAsFixed(2));
+                              setState(() => StrLBR = usdLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = usdCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = usdAUS().toStringAsFixed(2));
+                              setState(() => StrARS = usdARS().toStringAsFixed(2));
+                              setState(() => StrJPY = usdJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = usdYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonEUR ) {
+                              setState(() => StrEUR = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = eurBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = eurUSD().toStringAsFixed(2));
+                              setState(() => StrLBR = eurLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = eurCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = eurAUS().toStringAsFixed(2));
+                              setState(() => StrARS = eurARS().toStringAsFixed(2));
+                              setState(() => StrJPY = eurJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = eurYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonLBR ) {
+                              setState(() => StrLBR = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = lbrBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = lbrUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = lbrEUR().toStringAsFixed(2));
+                              setState(() => StrCAD = lbrCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = lbrAUS().toStringAsFixed(2));
+                              setState(() => StrARS = lbrARS().toStringAsFixed(2));
+                              setState(() => StrJPY = lbrJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = lbrYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonCAD ) {
+                              setState(() => StrCAD = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = dcadBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = dcadUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = dcadEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = dcadLBR().toStringAsFixed(2));
+                              setState(() => StrAUS = dcadAUS().toStringAsFixed(2));
+                              setState(() => StrARS = dcadARS().toStringAsFixed(2));
+                              setState(() => StrJPY = dcadJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = dcadYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonAUS ) {
+                              setState(() => StrAUS = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = ausBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = ausUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = ausEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = ausLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = ausCAD().toStringAsFixed(2));
+                              setState(() => StrARS = ausARS().toStringAsFixed(2));
+                              setState(() => StrJPY = ausJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = ausYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonARS ) {
+                              setState(() => StrARS = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = arsBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = arsUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = arsEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = arsLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = arsCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = arsAUS().toStringAsFixed(2));
+                              setState(() => StrJPY = arsJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = arsYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonJPY ) {
+                              setState(() => StrJPY = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = jpBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = jpUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = jpEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = jpLBR().toStringAsFixed(2));
+                              setState(() => StrAUS = jpAUS().toStringAsFixed(2));
+                              setState(() => StrCAD = jpCAD().toStringAsFixed(2));
+                              setState(() => StrARS = jpARS().toStringAsFixed(2));
+                              setState(() => StrYEN = jpYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonYEN ) {
+                              setState(() => StrYEN = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = ynBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = ynUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = ynEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = ynLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = ynCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = ynAUS().toStringAsFixed(2));
+                              setState(() => StrARS = ynARS().toStringAsFixed(2));
+                              setState(() => StrJPY = ynJPY().toStringAsFixed(2));
+                            }
+                            },
+                            style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               activebtonR$
-                                  ? Color.fromRGBO(255, 255, 255, 0.69)
-                                  : Color.fromRGBO(2, 82, 252, 1.0),
+                                  ? Color.fromRGBO(2, 82, 252, 1.0)
+                                  : Color.fromRGBO(255, 255, 255, 0.9),
+                              ),
                             ),
-                          ),
-                          child: Text(
+                            child: Text(
                             '$StrBrl\nR\$',
                             textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 82,
-                        width: 100,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (!activebtonU$D) {
-                              setState(() {
-                                activebtonU$D = true;
-                                activebtonR$ = false;
-                                activebtonARS = false;
-                                activebtonAUS = false;
-                                activebtonCAD = false;
-                                activebtonEUR = false;
-                                activebtonJPY = false;
-                                activebtonLBR = false;
-                                activebtonYEN = false;
-                              });
-                            }
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              activebtonU$D
-                                  ? Color.fromRGBO(255, 255, 255, 0.69)
-                                  : Color.fromRGBO(2, 82, 252, 1.0),
+                            style: TextStyle(
+                                color: activebtonR$
+                                    ? Colors.white
+                                    : Colors.black
                             ),
                           ),
-                          child: Text(
-                            '$StrUSD\nU\$D',
-                            style: TextStyle(color: Colors.black),
-                          ),
                         ),
                       ),
-                      Container(
+                    ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child:
+                        SizedBox(
                           height: 82,
                           width: 100,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (!activebtonEUR) {
+                          child: ElevatedButton(
+                            onPressed: () {
+                            if (!activebtonU$D) {
                               setState(() {
-                                activebtonEUR = true;
-                                activebtonU$D = false;
-                                activebtonARS = false;
-                                activebtonAUS = false;
-                                activebtonCAD = false;
-                                activebtonR$ = false;
-                                activebtonJPY = false;
-                                activebtonLBR = false;
-                                activebtonYEN = false;
+                              activebtonU$D = true;
+                              activebtonR$ = false;
+                              activebtonARS = false;
+                              activebtonAUS = false;
+                              activebtonCAD = false;
+                              activebtonEUR = false;
+                              activebtonJPY = false;
+                              activebtonLBR = false;
+                              activebtonYEN = false;
                               });
-                            }
-                          },
-                          style: ButtonStyle(
+                            } valorInserido = double.parse(_ValorInserido.text.replaceAll(".", "").replaceAll(",", "."));
+                              if ( activebtonR$  ) {
+                                setState(() => StrBrl = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrUSD = brlUSD().toStringAsFixed(2));
+                                setState(() => StrEUR = brlEUR().toStringAsFixed(2));
+                                setState(() => StrLBR = brlLBR().toStringAsFixed(2));
+                                setState(() => StrCAD = brlCAD().toStringAsFixed(2));
+                                setState(() => StrAUS = brlAUS().toStringAsFixed(2));
+                                setState(() => StrARS = brlARS().toStringAsFixed(2));
+                                setState(() => StrJPY = brlJPY().toStringAsFixed(2));
+                                setState(() => StrYEN = brlYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonU$D ) {
+                                setState(() => StrUSD = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = usdBRL().toStringAsFixed(2));
+                                setState(() => StrEUR = usdEUR()  .toStringAsFixed(2));
+                                setState(() => StrLBR = usdLBR().toStringAsFixed(2));
+                                setState(() => StrCAD = usdCAD().toStringAsFixed(2));
+                                setState(() => StrAUS = usdAUS().toStringAsFixed(2));
+                                setState(() => StrARS = usdARS().toStringAsFixed(2));
+                                setState(() => StrJPY = usdJPY().toStringAsFixed(2));
+                                setState(() => StrYEN = usdYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonEUR ) {
+                                setState(() => StrEUR = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = eurBRL().toStringAsFixed(2));
+                                setState(() => StrUSD = eurUSD().toStringAsFixed(2));
+                                setState(() => StrLBR = eurLBR().toStringAsFixed(2));
+                                setState(() => StrCAD = eurCAD().toStringAsFixed(2));
+                                setState(() => StrAUS = eurAUS().toStringAsFixed(2));
+                                setState(() => StrARS = eurARS().toStringAsFixed(2));
+                                setState(() => StrJPY = eurJPY().toStringAsFixed(2));
+                                setState(() => StrYEN = eurYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonLBR ) {
+                                setState(() => StrLBR = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = lbrBRL().toStringAsFixed(2));
+                                setState(() => StrUSD = lbrUSD().toStringAsFixed(2));
+                                setState(() => StrEUR = lbrEUR().toStringAsFixed(2));
+                                setState(() => StrCAD = lbrCAD().toStringAsFixed(2));
+                                setState(() => StrAUS = lbrAUS().toStringAsFixed(2));
+                                setState(() => StrARS = lbrARS().toStringAsFixed(2));
+                                setState(() => StrJPY = lbrJPY().toStringAsFixed(2));
+                                setState(() => StrYEN = lbrYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonCAD ) {
+                                setState(() => StrCAD = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = dcadBRL().toStringAsFixed(2));
+                                setState(() => StrUSD = dcadUSD().toStringAsFixed(2));
+                                setState(() => StrEUR = dcadEUR().toStringAsFixed(2));
+                                setState(() => StrLBR = dcadLBR().toStringAsFixed(2));
+                                setState(() => StrAUS = dcadAUS().toStringAsFixed(2));
+                                setState(() => StrARS = dcadARS().toStringAsFixed(2));
+                                setState(() => StrJPY = dcadJPY().toStringAsFixed(2));
+                                setState(() => StrYEN = dcadYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonAUS ) {
+                                setState(() => StrAUS = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = ausBRL().toStringAsFixed(2));
+                                setState(() => StrUSD = ausUSD().toStringAsFixed(2));
+                                setState(() => StrEUR = ausEUR().toStringAsFixed(2));
+                                setState(() => StrLBR = ausLBR().toStringAsFixed(2));
+                                setState(() => StrCAD = ausCAD().toStringAsFixed(2));
+                                setState(() => StrARS = ausARS().toStringAsFixed(2));
+                                setState(() => StrJPY = ausJPY().toStringAsFixed(2));
+                                setState(() => StrYEN = ausYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonARS ) {
+                                setState(() => StrARS = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = arsBRL().toStringAsFixed(2));
+                                setState(() => StrUSD = arsUSD().toStringAsFixed(2));
+                                setState(() => StrEUR = arsEUR().toStringAsFixed(2));
+                                setState(() => StrLBR = arsLBR().toStringAsFixed(2));
+                                setState(() => StrCAD = arsCAD().toStringAsFixed(2));
+                                setState(() => StrAUS = arsAUS().toStringAsFixed(2));
+                                setState(() => StrJPY = arsJPY().toStringAsFixed(2));
+                                setState(() => StrYEN = arsYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonJPY ) {
+                                setState(() => StrJPY = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = jpBRL().toStringAsFixed(2));
+                                setState(() => StrUSD = jpUSD().toStringAsFixed(2));
+                                setState(() => StrEUR = jpEUR().toStringAsFixed(2));
+                                setState(() => StrLBR = jpLBR().toStringAsFixed(2));
+                                setState(() => StrAUS = jpAUS().toStringAsFixed(2));
+                                setState(() => StrCAD = jpCAD().toStringAsFixed(2));
+                                setState(() => StrARS = jpARS().toStringAsFixed(2));
+                                setState(() => StrYEN = jpYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonYEN ) {
+                                setState(() => StrYEN = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = ynBRL().toStringAsFixed(2));
+                                setState(() => StrUSD = ynUSD().toStringAsFixed(2));
+                                setState(() => StrEUR = ynEUR().toStringAsFixed(2));
+                                setState(() => StrLBR = ynLBR().toStringAsFixed(2));
+                                setState(() => StrCAD = ynCAD().toStringAsFixed(2));
+                                setState(() => StrAUS = ynAUS().toStringAsFixed(2));
+                                setState(() => StrARS = ynARS().toStringAsFixed(2));
+                                setState(() => StrJPY = ynJPY().toStringAsFixed(2));
+                              }
+                              },
+                            style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                              activebtonEUR
-                                  ? Color.fromRGBO(255, 255, 255, 0.69)
-                                  : Color.fromRGBO(2, 82, 252, 1.0),
+                              activebtonU$D
+                                  ? Color.fromRGBO(2, 82, 252, 1.0)
+                                  : Color.fromRGBO(255, 255, 255, 0.9),
                             ),
                           ),
-                          child: Text(
-                            '$StrEUR\n €',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(color: Colors.black),
+                            child: Text(
+                            '$StrUSD\nU\$D',
+                            style: TextStyle(
+                                color: activebtonU$D
+                                    ? Colors.white
+                                    : Colors.black
+                            ),
                           ),
                         ),
+                      ),
+                    ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child:
+                        SizedBox(
+                          height: 82,
+                          width: 100,
+                          child: ElevatedButton(
+                            onPressed: () {
+                            if (!activebtonEUR) {
+                              setState(() {
+                              activebtonEUR = true;
+                              activebtonU$D = false;
+                              activebtonARS = false;
+                              activebtonAUS = false;
+                              activebtonCAD = false;
+                              activebtonR$ = false;
+                              activebtonJPY = false;
+                              activebtonLBR = false;
+                              activebtonYEN = false;
+                              });
+                            } valorInserido = double.parse(_ValorInserido.text.replaceAll(".", "").replaceAll(",", "."));
+                                if ( activebtonR$  ) {
+                                  setState(() => StrBrl = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrUSD = brlUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = brlEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = brlLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = brlCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = brlAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = brlARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = brlJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = brlYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonU$D ) {
+                                  setState(() => StrUSD = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = usdBRL().toStringAsFixed(2));
+                                  setState(() => StrEUR = usdEUR()  .toStringAsFixed(2));
+                                  setState(() => StrLBR = usdLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = usdCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = usdAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = usdARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = usdJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = usdYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonEUR ) {
+                                  setState(() => StrEUR = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = eurBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = eurUSD().toStringAsFixed(2));
+                                  setState(() => StrLBR = eurLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = eurCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = eurAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = eurARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = eurJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = eurYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonLBR ) {
+                                  setState(() => StrLBR = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = lbrBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = lbrUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = lbrEUR().toStringAsFixed(2));
+                                  setState(() => StrCAD = lbrCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = lbrAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = lbrARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = lbrJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = lbrYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonCAD ) {
+                                  setState(() => StrCAD = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = dcadBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = dcadUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = dcadEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = dcadLBR().toStringAsFixed(2));
+                                  setState(() => StrAUS = dcadAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = dcadARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = dcadJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = dcadYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonAUS ) {
+                                  setState(() => StrAUS = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = ausBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = ausUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = ausEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = ausLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = ausCAD().toStringAsFixed(2));
+                                  setState(() => StrARS = ausARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = ausJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = ausYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonARS ) {
+                                  setState(() => StrARS = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = arsBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = arsUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = arsEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = arsLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = arsCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = arsAUS().toStringAsFixed(2));
+                                  setState(() => StrJPY = arsJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = arsYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonJPY ) {
+                                  setState(() => StrJPY = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = jpBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = jpUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = jpEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = jpLBR().toStringAsFixed(2));
+                                  setState(() => StrAUS = jpAUS().toStringAsFixed(2));
+                                  setState(() => StrCAD = jpCAD().toStringAsFixed(2));
+                                  setState(() => StrARS = jpARS().toStringAsFixed(2));
+                                  setState(() => StrYEN = jpYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonYEN ) {
+                                  setState(() => StrYEN = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = ynBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = ynUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = ynEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = ynLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = ynCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = ynAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = ynARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = ynJPY().toStringAsFixed(2));
+                                }
+                                },
+                                style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                  activebtonEUR
+                                  ? Color.fromRGBO(2, 82, 252, 1.0)
+                                  : Color.fromRGBO(255, 255, 255, 0.9),
+                              ),
+                            ),
+                            child: Text(
+                            '$StrEUR\n€',
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: activebtonEUR
+                                    ? Colors.white
+                                    : Colors.black
+                              )
+                            ),
+                          ),
+                        )
                       ),
                     ],
                   ),
-
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
-                        height: 82,
-                        width: 100,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (!activebtonLBR) {
-                              setState(() {
-                                activebtonLBR = true;
-                                activebtonU$D = false;
-                                activebtonARS = false;
-                                activebtonAUS = false;
-                                activebtonCAD = false;
-                                activebtonEUR = false;
-                                activebtonJPY = false;
-                                activebtonR$ = false;
-                                activebtonYEN = false;
-                              });
-                            }
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              activebtonLBR
-                                  ? Color.fromRGBO(255, 255, 255, 0.69)
-                                  : Color.fromRGBO(2, 82, 252, 1.0),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child:
+                        SizedBox(
+                          height: 82,
+                          width: 100,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (!activebtonLBR) {
+                                setState(() {
+                                  activebtonLBR = true;
+                                  activebtonU$D = false;
+                                  activebtonARS = false;
+                                  activebtonAUS = false;
+                                  activebtonCAD = false;
+                                  activebtonEUR = false;
+                                  activebtonJPY = false;
+                                  activebtonR$ = false;
+                                  activebtonYEN = false;
+                                });
+                              } valorInserido = double.parse(_ValorInserido.text.replaceAll(".", "").replaceAll(",", "."));
+                              if ( activebtonR$  ) {
+                                setState(() => StrBrl = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrUSD = brlUSD().toStringAsFixed(2));
+                                setState(() => StrEUR = brlEUR().toStringAsFixed(2));
+                                setState(() => StrLBR = brlLBR().toStringAsFixed(2));
+                                setState(() => StrCAD = brlCAD().toStringAsFixed(2));
+                                setState(() => StrAUS = brlAUS().toStringAsFixed(2));
+                                setState(() => StrARS = brlARS().toStringAsFixed(2));
+                                setState(() => StrJPY = brlJPY().toStringAsFixed(2));
+                                setState(() => StrYEN = brlYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonU$D ) {
+                                setState(() => StrUSD = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = usdBRL().toStringAsFixed(2));
+                                setState(() => StrEUR = usdEUR()  .toStringAsFixed(2));
+                                setState(() => StrLBR = usdLBR().toStringAsFixed(2));
+                                setState(() => StrCAD = usdCAD().toStringAsFixed(2));
+                                setState(() => StrAUS = usdAUS().toStringAsFixed(2));
+                                setState(() => StrARS = usdARS().toStringAsFixed(2));
+                                setState(() => StrJPY = usdJPY().toStringAsFixed(2));
+                                setState(() => StrYEN = usdYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonEUR ) {
+                                setState(() => StrEUR = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = eurBRL().toStringAsFixed(2));
+                                setState(() => StrUSD = eurUSD().toStringAsFixed(2));
+                                setState(() => StrLBR = eurLBR().toStringAsFixed(2));
+                                setState(() => StrCAD = eurCAD().toStringAsFixed(2));
+                                setState(() => StrAUS = eurAUS().toStringAsFixed(2));
+                                setState(() => StrARS = eurARS().toStringAsFixed(2));
+                                setState(() => StrJPY = eurJPY().toStringAsFixed(2));
+                                setState(() => StrYEN = eurYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonLBR ) {
+                                setState(() => StrLBR = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = lbrBRL().toStringAsFixed(2));
+                                setState(() => StrUSD = lbrUSD().toStringAsFixed(2));
+                                setState(() => StrEUR = lbrEUR().toStringAsFixed(2));
+                                setState(() => StrCAD = lbrCAD().toStringAsFixed(2));
+                                setState(() => StrAUS = lbrAUS().toStringAsFixed(2));
+                                setState(() => StrARS = lbrARS().toStringAsFixed(2));
+                                setState(() => StrJPY = lbrJPY().toStringAsFixed(2));
+                                setState(() => StrYEN = lbrYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonCAD ) {
+                                setState(() => StrCAD = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = dcadBRL().toStringAsFixed(2));
+                                setState(() => StrUSD = dcadUSD().toStringAsFixed(2));
+                                setState(() => StrEUR = dcadEUR().toStringAsFixed(2));
+                                setState(() => StrLBR = dcadLBR().toStringAsFixed(2));
+                                setState(() => StrAUS = dcadAUS().toStringAsFixed(2));
+                                setState(() => StrARS = dcadARS().toStringAsFixed(2));
+                                setState(() => StrJPY = dcadJPY().toStringAsFixed(2));
+                                setState(() => StrYEN = dcadYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonAUS ) {
+                                setState(() => StrAUS = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = ausBRL().toStringAsFixed(2));
+                                setState(() => StrUSD = ausUSD().toStringAsFixed(2));
+                                setState(() => StrEUR = ausEUR().toStringAsFixed(2));
+                                setState(() => StrLBR = ausLBR().toStringAsFixed(2));
+                                setState(() => StrCAD = ausCAD().toStringAsFixed(2));
+                                setState(() => StrARS = ausARS().toStringAsFixed(2));
+                                setState(() => StrJPY = ausJPY().toStringAsFixed(2));
+                                setState(() => StrYEN = ausYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonARS ) {
+                                setState(() => StrARS = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = arsBRL().toStringAsFixed(2));
+                                setState(() => StrUSD = arsUSD().toStringAsFixed(2));
+                                setState(() => StrEUR = arsEUR().toStringAsFixed(2));
+                                setState(() => StrLBR = arsLBR().toStringAsFixed(2));
+                                setState(() => StrCAD = arsCAD().toStringAsFixed(2));
+                                setState(() => StrAUS = arsAUS().toStringAsFixed(2));
+                                setState(() => StrJPY = arsJPY().toStringAsFixed(2));
+                                setState(() => StrYEN = arsYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonJPY ) {
+                                setState(() => StrJPY = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = jpBRL().toStringAsFixed(2));
+                                setState(() => StrUSD = jpUSD().toStringAsFixed(2));
+                                setState(() => StrEUR = jpEUR().toStringAsFixed(2));
+                                setState(() => StrLBR = jpLBR().toStringAsFixed(2));
+                                setState(() => StrAUS = jpAUS().toStringAsFixed(2));
+                                setState(() => StrCAD = jpCAD().toStringAsFixed(2));
+                                setState(() => StrARS = jpARS().toStringAsFixed(2));
+                                setState(() => StrYEN = jpYEN().toStringAsFixed(2));
+                              }
+                              if ( activebtonYEN ) {
+                                setState(() => StrYEN = valorInserido!.toStringAsFixed(2));
+                                setState(() => StrBrl = ynBRL().toStringAsFixed(2));
+                                setState(() => StrUSD = ynUSD().toStringAsFixed(2));
+                                setState(() => StrEUR = ynEUR().toStringAsFixed(2));
+                                setState(() => StrLBR = ynLBR().toStringAsFixed(2));
+                                setState(() => StrCAD = ynCAD().toStringAsFixed(2));
+                                setState(() => StrAUS = ynAUS().toStringAsFixed(2));
+                                setState(() => StrARS = ynARS().toStringAsFixed(2));
+                                setState(() => StrJPY = ynJPY().toStringAsFixed(2));
+                              }
+                            },
+                              style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all(
+                                activebtonLBR
+                                    ? Color.fromRGBO(2, 82, 252, 1.0)
+                                    : Color.fromRGBO(255, 255, 255, 0.9),
+                              ),
                             ),
-                          ),
-                          child: Text(
-                            '$StrLBR\n£',
-                            style: TextStyle(color: Colors.black),
+                            child: Text(
+                              '$StrLBR\n£',
+                                textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  color: activebtonLBR
+                                      ? Colors.white
+                                      : Colors.black
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                      Container(
-                        height: 82,
-                        width: 100,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (!activebtonCAD) {
-                              setState(() {
-                                activebtonCAD = true;
-                                activebtonU$D = false;
-                                activebtonARS = false;
-                                activebtonAUS = false;
-                                activebtonEUR = false;
-                                activebtonJPY = false;
-                                activebtonLBR = false;
-                                activebtonR$ = false;
-                                activebtonYEN = false;
-                              });
-                            }
-                          },
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                              activebtonCAD
-                                  ? Color.fromRGBO(255, 255, 255, 0.69)
-                                  : Color.fromRGBO(2, 82, 252, 1.0),
-                            ),
-                          ),
-                          child: Text(
-                            '$StrCAD\nC\$',
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        height: 82,
-                        width: 100,
-                        child: ElevatedButton(
-                          onPressed: () {
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child:
+                        SizedBox(
+                          height: 82,
+                          width: 100,
+                          child: ElevatedButton(
+                            onPressed: () {
                             if (!activebtonAUS) {
                               setState(() {
                                 activebtonAUS= true;
@@ -656,33 +1075,281 @@ class _PrincipalState extends State<Principal> {
                                 activebtonR$ = false;
                                 activebtonYEN = false;
                               });
+                            } valorInserido = double.parse(_ValorInserido.text.replaceAll(".", "").replaceAll(",", "."));
+                                if ( activebtonR$  ) {
+                                  setState(() => StrBrl = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrUSD = brlUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = brlEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = brlLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = brlCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = brlAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = brlARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = brlJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = brlYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonU$D ) {
+                                  setState(() => StrUSD = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = usdBRL().toStringAsFixed(2));
+                                  setState(() => StrEUR = usdEUR()  .toStringAsFixed(2));
+                                  setState(() => StrLBR = usdLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = usdCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = usdAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = usdARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = usdJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = usdYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonEUR ) {
+                                  setState(() => StrEUR = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = eurBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = eurUSD().toStringAsFixed(2));
+                                  setState(() => StrLBR = eurLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = eurCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = eurAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = eurARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = eurJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = eurYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonLBR ) {
+                                  setState(() => StrLBR = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = lbrBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = lbrUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = lbrEUR().toStringAsFixed(2));
+                                  setState(() => StrCAD = lbrCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = lbrAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = lbrARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = lbrJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = lbrYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonCAD ) {
+                                  setState(() => StrCAD = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = dcadBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = dcadUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = dcadEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = dcadLBR().toStringAsFixed(2));
+                                  setState(() => StrAUS = dcadAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = dcadARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = dcadJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = dcadYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonAUS ) {
+                                  setState(() => StrAUS = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = ausBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = ausUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = ausEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = ausLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = ausCAD().toStringAsFixed(2));
+                                  setState(() => StrARS = ausARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = ausJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = ausYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonARS ) {
+                                  setState(() => StrARS = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = arsBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = arsUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = arsEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = arsLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = arsCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = arsAUS().toStringAsFixed(2));
+                                  setState(() => StrJPY = arsJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = arsYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonJPY ) {
+                                  setState(() => StrJPY = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = jpBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = jpUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = jpEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = jpLBR().toStringAsFixed(2));
+                                  setState(() => StrAUS = jpAUS().toStringAsFixed(2));
+                                  setState(() => StrCAD = jpCAD().toStringAsFixed(2));
+                                  setState(() => StrARS = jpARS().toStringAsFixed(2));
+                                  setState(() => StrYEN = jpYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonYEN ) {
+                                  setState(() => StrYEN = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = ynBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = ynUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = ynEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = ynLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = ynCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = ynAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = ynARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = ynJPY().toStringAsFixed(2));
+                                }
+                            },
+                            style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                              activebtonAUS
+                                  ? Color.fromRGBO(2, 82, 252, 1.0)
+                                  : Color.fromRGBO(255, 255, 255, 0.9),
+                            ),
+                          ),
+                            child: Text(
+                            '$StrAUS\nAU\$',
+                            style: TextStyle(
+                                color: activebtonAUS
+                                    ? Colors.white
+                                    : Colors.black
+                            ),
+                          ),
+                        ),
+                      )
+                    ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child:
+                        SizedBox(
+                        height: 82,
+                        width: 100,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            if (!activebtonCAD) {
+                              setState(() {activebtonCAD = true;
+                              activebtonU$D = false;
+                              activebtonARS = false;
+                              activebtonAUS = false;
+                              activebtonEUR = false;
+                              activebtonJPY = false;
+                              activebtonLBR = false;
+                              activebtonR$ = false;
+                              activebtonYEN = false;
+                              });
                             }
+                            valorInserido = double.parse(_ValorInserido.text.replaceAll(".", "").replaceAll(",", "."));
+                                if ( activebtonR$  ) {
+                                  setState(() => StrBrl = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrUSD = brlUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = brlEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = brlLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = brlCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = brlAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = brlARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = brlJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = brlYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonU$D ) {
+                                  setState(() => StrUSD = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = usdBRL().toStringAsFixed(2));
+                                  setState(() => StrEUR = usdEUR()  .toStringAsFixed(2));
+                                  setState(() => StrLBR = usdLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = usdCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = usdAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = usdARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = usdJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = usdYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonEUR ) {
+                                  setState(() => StrEUR = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = eurBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = eurUSD().toStringAsFixed(2));
+                                  setState(() => StrLBR = eurLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = eurCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = eurAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = eurARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = eurJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = eurYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonLBR ) {
+                                  setState(() => StrLBR = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = lbrBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = lbrUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = lbrEUR().toStringAsFixed(2));
+                                  setState(() => StrCAD = lbrCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = lbrAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = lbrARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = lbrJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = lbrYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonCAD ) {
+                                  setState(() => StrCAD = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = dcadBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = dcadUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = dcadEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = dcadLBR().toStringAsFixed(2));
+                                  setState(() => StrAUS = dcadAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = dcadARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = dcadJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = dcadYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonAUS ) {
+                                  setState(() => StrAUS = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = ausBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = ausUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = ausEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = ausLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = ausCAD().toStringAsFixed(2));
+                                  setState(() => StrARS = ausARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = ausJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = ausYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonARS ) {
+                                  setState(() => StrARS = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = arsBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = arsUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = arsEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = arsLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = arsCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = arsAUS().toStringAsFixed(2));
+                                  setState(() => StrJPY = arsJPY().toStringAsFixed(2));
+                                  setState(() => StrYEN = arsYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonJPY ) {
+                                  setState(() => StrJPY = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = jpBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = jpUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = jpEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = jpLBR().toStringAsFixed(2));
+                                  setState(() => StrAUS = jpAUS().toStringAsFixed(2));
+                                  setState(() => StrCAD = jpCAD().toStringAsFixed(2));
+                                  setState(() => StrARS = jpARS().toStringAsFixed(2));
+                                  setState(() => StrYEN = jpYEN().toStringAsFixed(2));
+                                }
+                                if ( activebtonYEN ) {
+                                  setState(() => StrYEN = valorInserido!.toStringAsFixed(2));
+                                  setState(() => StrBrl = ynBRL().toStringAsFixed(2));
+                                  setState(() => StrUSD = ynUSD().toStringAsFixed(2));
+                                  setState(() => StrEUR = ynEUR().toStringAsFixed(2));
+                                  setState(() => StrLBR = ynLBR().toStringAsFixed(2));
+                                  setState(() => StrCAD = ynCAD().toStringAsFixed(2));
+                                  setState(() => StrAUS = ynAUS().toStringAsFixed(2));
+                                  setState(() => StrARS = ynARS().toStringAsFixed(2));
+                                  setState(() => StrJPY = ynJPY().toStringAsFixed(2));
+                                }
+
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                              activebtonAUS
-                                  ? Color.fromRGBO(255, 255, 255, 0.69)
-                                  : Color.fromRGBO(2, 82, 252, 1.0),
+                              activebtonCAD
+                                  ? Color.fromRGBO(2, 82, 252, 1.0)
+                                  : Color.fromRGBO(255, 255, 255, 0.9),
+                            ),
+                           ),
+                          child: Text(
+                            '$StrCAD\nCAD',
+                            style: TextStyle(
+                                color: activebtonCAD
+                                    ? Colors.white
+                                    : Colors.black
                             ),
                           ),
-                          child: Text(
-                            '$StrAUS\nAU\$',
-                            style: TextStyle(color: Colors.black),
-                          ),
                         ),
+                      )
                       ),
                     ],
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      Container(
-                      height: 82,
-                      width: 100,
-                        child: ElevatedButton(
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child:
+                        SizedBox(
+                         height: 82,
+                          width: 100,
+                         child: ElevatedButton(
                           onPressed: () {
                             if (!activebtonARS) {
                               setState(() {
+
                                 activebtonARS = true;
                                 activebtonU$D = false;
                                 activebtonAUS = false;
@@ -693,28 +1360,136 @@ class _PrincipalState extends State<Principal> {
                                 activebtonR$ = false;
                                 activebtonYEN = false;
                               });
+                            }valorInserido = double.parse(_ValorInserido.text.replaceAll(".", "").replaceAll(",", "."));
+                            if ( activebtonR$  ) {
+                              setState(() => StrBrl = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrUSD = brlUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = brlEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = brlLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = brlCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = brlAUS().toStringAsFixed(2));
+                              setState(() => StrARS = brlARS().toStringAsFixed(2));
+                              setState(() => StrJPY = brlJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = brlYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonU$D ) {
+                              setState(() => StrUSD = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = usdBRL().toStringAsFixed(2));
+                              setState(() => StrEUR = usdEUR()  .toStringAsFixed(2));
+                              setState(() => StrLBR = usdLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = usdCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = usdAUS().toStringAsFixed(2));
+                              setState(() => StrARS = usdARS().toStringAsFixed(2));
+                              setState(() => StrJPY = usdJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = usdYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonEUR ) {
+                              setState(() => StrEUR = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = eurBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = eurUSD().toStringAsFixed(2));
+                              setState(() => StrLBR = eurLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = eurCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = eurAUS().toStringAsFixed(2));
+                              setState(() => StrARS = eurARS().toStringAsFixed(2));
+                              setState(() => StrJPY = eurJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = eurYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonLBR ) {
+                              setState(() => StrLBR = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = lbrBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = lbrUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = lbrEUR().toStringAsFixed(2));
+                              setState(() => StrCAD = lbrCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = lbrAUS().toStringAsFixed(2));
+                              setState(() => StrARS = lbrARS().toStringAsFixed(2));
+                              setState(() => StrJPY = lbrJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = lbrYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonCAD ) {
+                              setState(() => StrCAD = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = dcadBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = dcadUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = dcadEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = dcadLBR().toStringAsFixed(2));
+                              setState(() => StrAUS = dcadAUS().toStringAsFixed(2));
+                              setState(() => StrARS = dcadARS().toStringAsFixed(2));
+                              setState(() => StrJPY = dcadJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = dcadYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonAUS ) {
+                              setState(() => StrAUS = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = ausBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = ausUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = ausEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = ausLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = ausCAD().toStringAsFixed(2));
+                              setState(() => StrARS = ausARS().toStringAsFixed(2));
+                              setState(() => StrJPY = ausJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = ausYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonARS ) {
+                              setState(() => StrARS = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = arsBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = arsUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = arsEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = arsLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = arsCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = arsAUS().toStringAsFixed(2));
+                              setState(() => StrJPY = arsJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = arsYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonJPY ) {
+                              setState(() => StrJPY = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = jpBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = jpUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = jpEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = jpLBR().toStringAsFixed(2));
+                              setState(() => StrAUS = jpAUS().toStringAsFixed(2));
+                              setState(() => StrCAD = jpCAD().toStringAsFixed(2));
+                              setState(() => StrARS = jpARS().toStringAsFixed(2));
+                              setState(() => StrYEN = jpYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonYEN ) {
+                              setState(() => StrYEN = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = ynBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = ynUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = ynEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = ynLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = ynCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = ynAUS().toStringAsFixed(2));
+                              setState(() => StrARS = ynARS().toStringAsFixed(2));
+                              setState(() => StrJPY = ynJPY().toStringAsFixed(2));
                             }
                           },
-                          style: ButtonStyle(
+                            style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               activebtonARS
-                                  ? Color.fromRGBO(255, 255, 255, 0.69)
-                                  : Color.fromRGBO(2, 82, 252, 1.0),
+                                  ? Color.fromRGBO(2, 82, 252, 1.0)
+                                  : Color.fromRGBO(255, 255, 255, 0.9),
                             ),
                           ),
                           child: Text(
                             '$StrARS\nAR\$',
-                            style: TextStyle(color: Colors.black),
+                            style: TextStyle(
+                              color: activebtonARS
+                                  ? Colors.white
+                                  : Colors.black
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                      height: 82,
-                      width: 100,
-                        child: ElevatedButton(
-                          onPressed: () {
+                      )
+                    ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child:
+                        SizedBox(
+                          height: 82,
+                          width: 100,
+                          child: ElevatedButton(
+                            onPressed: () {
                             if (!activebtonJPY) {
                               setState(() {
+
                                 activebtonJPY= true;
                                 activebtonU$D = false;
                                 activebtonARS = false;
@@ -724,30 +1499,137 @@ class _PrincipalState extends State<Principal> {
                                 activebtonLBR = false;
                                 activebtonR$ = false;
                                 activebtonYEN = false;
-
                               });
+                            }valorInserido = double.parse(_ValorInserido.text.replaceAll(".", "").replaceAll(",", "."));
+                            if ( activebtonR$  ) {
+                              setState(() => StrBrl = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrUSD = brlUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = brlEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = brlLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = brlCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = brlAUS().toStringAsFixed(2));
+                              setState(() => StrARS = brlARS().toStringAsFixed(2));
+                              setState(() => StrJPY = brlJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = brlYEN().toStringAsFixed(2));
                             }
-                          },
-                          style: ButtonStyle(
+                            if ( activebtonU$D ) {
+                              setState(() => StrUSD = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = usdBRL().toStringAsFixed(2));
+                              setState(() => StrEUR = usdEUR()  .toStringAsFixed(2));
+                              setState(() => StrLBR = usdLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = usdCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = usdAUS().toStringAsFixed(2));
+                              setState(() => StrARS = usdARS().toStringAsFixed(2));
+                              setState(() => StrJPY = usdJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = usdYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonEUR ) {
+                              setState(() => StrEUR = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = eurBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = eurUSD().toStringAsFixed(2));
+                              setState(() => StrLBR = eurLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = eurCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = eurAUS().toStringAsFixed(2));
+                              setState(() => StrARS = eurARS().toStringAsFixed(2));
+                              setState(() => StrJPY = eurJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = eurYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonLBR ) {
+                              setState(() => StrLBR = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = lbrBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = lbrUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = lbrEUR().toStringAsFixed(2));
+                              setState(() => StrCAD = lbrCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = lbrAUS().toStringAsFixed(2));
+                              setState(() => StrARS = lbrARS().toStringAsFixed(2));
+                              setState(() => StrJPY = lbrJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = lbrYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonCAD ) {
+                              setState(() => StrCAD = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = dcadBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = dcadUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = dcadEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = dcadLBR().toStringAsFixed(2));
+                              setState(() => StrAUS = dcadAUS().toStringAsFixed(2));
+                              setState(() => StrARS = dcadARS().toStringAsFixed(2));
+                              setState(() => StrJPY = dcadJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = dcadYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonAUS ) {
+                              setState(() => StrAUS = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = ausBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = ausUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = ausEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = ausLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = ausCAD().toStringAsFixed(2));
+                              setState(() => StrARS = ausARS().toStringAsFixed(2));
+                              setState(() => StrJPY = ausJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = ausYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonARS ) {
+                              setState(() => StrARS = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = arsBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = arsUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = arsEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = arsLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = arsCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = arsAUS().toStringAsFixed(2));
+                              setState(() => StrJPY = arsJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = arsYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonJPY ) {
+                              setState(() => StrJPY = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = jpBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = jpUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = jpEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = jpLBR().toStringAsFixed(2));
+                              setState(() => StrAUS = jpAUS().toStringAsFixed(2));
+                              setState(() => StrCAD = jpCAD().toStringAsFixed(2));
+                              setState(() => StrARS = jpARS().toStringAsFixed(2));
+                              setState(() => StrYEN = jpYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonYEN ) {
+                              setState(() => StrYEN = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = ynBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = ynUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = ynEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = ynLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = ynCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = ynAUS().toStringAsFixed(2));
+                              setState(() => StrARS = ynARS().toStringAsFixed(2));
+                              setState(() => StrJPY = ynJPY().toStringAsFixed(2));
+                            }
+                            },
+                            style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               activebtonJPY
-                                  ? Color.fromRGBO(255, 255, 255, 0.69)
-                                  : Color.fromRGBO(2, 82, 252, 1.0),
+                                  ? Color.fromRGBO(2, 82, 252, 1.0)
+                                  : Color.fromRGBO(255, 255, 255, 0.9),
+                              ),
+                            ),
+                            child: Text(
+                            '$StrJPY\nJP¥',
+                            style: TextStyle(
+                                color: activebtonJPY
+                                  ? Colors.white
+                                  : Colors.black
                             ),
                           ),
-                          child: Text(
-                            '$StrJPY\nJP¥',
-                            style: TextStyle(color: Colors.black),
-                          ),
                         ),
-                      ),
-                      Container(
-                      height: 82,
-                      width: 100,
-                        child: ElevatedButton(
-                          onPressed: () {
+                      )
+                    ),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child:
+                        SizedBox(
+                          height: 82,
+                          width: 100,
+                          child: ElevatedButton(
+                            onPressed: () {
                             if (!activebtonYEN) {
                               setState(() {
+
                                 activebtonYEN = true;
                                 activebtonU$D = false;
                                 activebtonARS = false;
@@ -758,27 +1640,132 @@ class _PrincipalState extends State<Principal> {
                                 activebtonR$ = false;
                                 activebtonLBR = false;
                               });
+                            } valorInserido = double.parse(_ValorInserido.text.replaceAll(".", "").replaceAll(",", "."));
+                            if ( activebtonR$  ) {
+                              setState(() => StrBrl = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrUSD = brlUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = brlEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = brlLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = brlCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = brlAUS().toStringAsFixed(2));
+                              setState(() => StrARS = brlARS().toStringAsFixed(2));
+                              setState(() => StrJPY = brlJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = brlYEN().toStringAsFixed(2));
                             }
-                          },
-                          style: ButtonStyle(
+                            if ( activebtonU$D ) {
+                              setState(() => StrUSD = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = usdBRL().toStringAsFixed(2));
+                              setState(() => StrEUR = usdEUR()  .toStringAsFixed(2));
+                              setState(() => StrLBR = usdLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = usdCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = usdAUS().toStringAsFixed(2));
+                              setState(() => StrARS = usdARS().toStringAsFixed(2));
+                              setState(() => StrJPY = usdJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = usdYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonEUR ) {
+                              setState(() => StrEUR = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = eurBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = eurUSD().toStringAsFixed(2));
+                              setState(() => StrLBR = eurLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = eurCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = eurAUS().toStringAsFixed(2));
+                              setState(() => StrARS = eurARS().toStringAsFixed(2));
+                              setState(() => StrJPY = eurJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = eurYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonLBR ) {
+                              setState(() => StrLBR = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = lbrBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = lbrUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = lbrEUR().toStringAsFixed(2));
+                              setState(() => StrCAD = lbrCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = lbrAUS().toStringAsFixed(2));
+                              setState(() => StrARS = lbrARS().toStringAsFixed(2));
+                              setState(() => StrJPY = lbrJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = lbrYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonCAD ) {
+                              setState(() => StrCAD = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = dcadBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = dcadUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = dcadEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = dcadLBR().toStringAsFixed(2));
+                              setState(() => StrAUS = dcadAUS().toStringAsFixed(2));
+                              setState(() => StrARS = dcadARS().toStringAsFixed(2));
+                              setState(() => StrJPY = dcadJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = dcadYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonAUS ) {
+                              setState(() => StrAUS = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = ausBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = ausUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = ausEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = ausLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = ausCAD().toStringAsFixed(2));
+                              setState(() => StrARS = ausARS().toStringAsFixed(2));
+                              setState(() => StrJPY = ausJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = ausYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonARS ) {
+                              setState(() => StrARS = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = arsBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = arsUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = arsEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = arsLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = arsCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = arsAUS().toStringAsFixed(2));
+                              setState(() => StrJPY = arsJPY().toStringAsFixed(2));
+                              setState(() => StrYEN = arsYEN().toStringAsFixed(2));
+                            };
+                            if ( activebtonJPY ) {
+                              setState(() => StrJPY = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = jpBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = jpUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = jpEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = jpLBR().toStringAsFixed(2));
+                              setState(() => StrAUS = jpAUS().toStringAsFixed(2));
+                              setState(() => StrCAD = jpCAD().toStringAsFixed(2));
+                              setState(() => StrARS = jpARS().toStringAsFixed(2));
+                              setState(() => StrYEN = jpYEN().toStringAsFixed(2));
+                            }
+                            if ( activebtonYEN ) {
+                              setState(() => StrYEN = valorInserido!.toStringAsFixed(2));
+                              setState(() => StrBrl = ynBRL().toStringAsFixed(2));
+                              setState(() => StrUSD = ynUSD().toStringAsFixed(2));
+                              setState(() => StrEUR = ynEUR().toStringAsFixed(2));
+                              setState(() => StrLBR = ynLBR().toStringAsFixed(2));
+                              setState(() => StrCAD = ynCAD().toStringAsFixed(2));
+                              setState(() => StrAUS = ynAUS().toStringAsFixed(2));
+                              setState(() => StrARS = ynARS().toStringAsFixed(2));
+                              setState(() => StrJPY = ynJPY().toStringAsFixed(2));
+                            }
+                            },
+                            style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
                               activebtonYEN
-                                  ? Color.fromRGBO(255, 255, 255, 0.69)
-                                  : Color.fromRGBO(2, 82, 252, 1.0),
+                                  ? Color.fromRGBO(2, 82, 252, 1.0)
+                                  : Color.fromRGBO(255, 255, 255, 0.9),
+                              ),
                             ),
-                          ),
-                          child: Text(
-                            '$StrYEN\n¥',
-                            style: TextStyle(color: Colors.black),
+                            child: Text(
+                            '$StrYEN\nCN¥',
+                            style: TextStyle(color:
+                            activebtonYEN
+                                ? Colors.white
+                                : Colors.black
+                            ),
                           ),
                         ),
                       )
+                      ),
                     ],
                   ),
                 ],
               ),
-            )
-          ])
+            ),
+          ],
+        ),
       ),
     );
   }
