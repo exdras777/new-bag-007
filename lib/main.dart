@@ -327,18 +327,15 @@ class _PrincipalState extends State<Principal> {
         leading: IconButton(
           color: Colors.black,
             onPressed: (){
-            AlertDialog(
-              content: TextField(
-              controller: customController,
-            ),
-              title: Text("data"),
-              actions: [
-                MaterialButton(
-                  elevation: 5.0,
-                  child: Text('ok!'),
-                  onPressed: (){}
-                )
-              ],
+            showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  title: Text("Nomes das Moedas"),
+                  content: Text("R\$ = Real brasileiro \n"
+                      "U\$D = Dolar Estado Unidense \n"
+                  ""),
+                ),
+              barrierDismissible: true,
             );
           },
           icon: Icon(Icons.help),
@@ -365,6 +362,9 @@ class _PrincipalState extends State<Principal> {
               width: double.infinity,
               height: 91,
               child: TextField(
+                style: TextStyle(
+                  color: Colors.white
+                ),
                 decoration: InputDecoration(
                   labelText: "Insira um valor",
                   labelStyle: TextStyle(
@@ -372,7 +372,7 @@ class _PrincipalState extends State<Principal> {
                     fontSize: 24,
                   ),
                   border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(17.4))
+                    borderRadius: BorderRadius.all(Radius.circular(17.4))
                   ),
                 ),
                 keyboardType: TextInputType.number,
@@ -390,7 +390,7 @@ class _PrincipalState extends State<Principal> {
                     setState(() => StrJPY = brlJPY().toStringAsFixed(2));
                     setState(() => StrYEN = brlYEN().toStringAsFixed(2));
                   }
-                  if ( activebtonU$D ) {
+                  if ( activebtonU$D ) {  
                     setState(() => StrUSD = valorInserido!.toStringAsFixed(2));
                     setState(() => StrBrl = usdBRL().toStringAsFixed(2));
                     setState(() => StrEUR = usdEUR()  .toStringAsFixed(2));
